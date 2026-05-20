@@ -1,0 +1,42 @@
+# =====================================================================
+# Configuracion Muevete BI ETL
+# Las contrasenas estan cifradas con Jasypt (PBEWithMD5AndDES)
+# La master key se debe definir en variable de entorno: MUEVETE_BI_MASTER_KEY
+# Para cifrar/descifrar usar: java -cp muevete-bi-etl.jar com.muevete.bi.etl.util.CryptoUtil
+# =====================================================================
+
+scheduler:
+  cron: "0 0 18 * * ?"          # Todos los dias a las 18:00
+  timezone: "America/Bogota"
+  runOnStartup: false           # true = ejecuta una vez al arrancar el servicio
+
+postgres:
+  host: "136.20.0.52"
+  port: 5432
+  database: "MUEVETE"
+  user: "muevete_bi"
+  passwordEnc: "ENC(REEMPLAZAR_CON_PASSWORD_CIFRADA)"
+  schema: "public"
+  # Tablas destino y de control (se crean al primer arranque si no existen)
+  controlTable: "bi_control_proceso"
+  maestraTable: "bi_comparendos_maestro"
+  recaudoTable: "RECAUDO_MULTAS_SAST_TURBACO"
+  carteraTable: "CARTERA_MULTAS_SAST_TURBACO"
+
+oracle:
+  host: "192.168.30.240"
+  port: 1521
+  sid: "ORCL"
+  user: "MUEVETE"
+  passwordEnc: "ENC(REEMPLAZAR_CON_PASSWORD_CIFRADA)"
+  stagingTable: "MUEVETE.STG_COMPARENDOS_BI"
+  fetchSize: 5000
+  batchSize: 5000
+
+etl:
+  # Tamano de los batches al insertar/extraer de las BDs
+  insertBatchSize: 5000
+  # Si true, hace TRUNCATE+INSERT en las tablas destino (recomendado)
+  truncateBeforeInsert: true
+  # Procesos a ejecutar en orden
+  procesoNombre: "ETL_MUEVETE_BI_TURBACO"

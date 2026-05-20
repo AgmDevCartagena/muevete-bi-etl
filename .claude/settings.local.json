@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn compile *)",
+      "Bash(where mvn *)",
+      "Bash(where mvn.cmd)",
+      "Bash(ls \"c:/Users/EQUIPO/muevete-bi-etl/mvnw\"*)"
+    ]
+  }
+}

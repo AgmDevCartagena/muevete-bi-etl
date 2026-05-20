@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Configuracion de WinSW para correr la app como servicio Windows.
+  Ajustar las rutas absolutas segun donde quede instalado el proyecto.
+  Nombre esperado del ejecutable: muevete-bi-etl-service.exe
+-->
+<service>
+    <id>MueveteBIETL</id>
+    <name>Muevete BI ETL</name>
+    <description>ETL automatizado Turbaco: PostgreSQL Bogota - Oracle - PostgreSQL Bogota</description>
+
+    <executable>%MUEVETE_BI_JAVA_HOME%\bin\java.exe</executable>
+    <arguments>-Dconfig.file="%BASE%\..\config\application.yml" -DLOG_DIR="%BASE%\..\logs" -jar "%BASE%\..\target\muevete-bi-etl.jar"</arguments>
+
+    <workingdirectory>%BASE%\..</workingdirectory>
+
+    <logpath>%BASE%\..\logs</logpath>
+    <log mode="roll-by-size">
+        <sizeThreshold>10240</sizeThreshold>
+        <keepFiles>10</keepFiles>
+    </log>
+
+    <onfailure action="restart" delay="30 sec"/>
+    <onfailure action="restart" delay="60 sec"/>
+    <onfailure action="none"/>
+
+    <startmode>Automatic</startmode>
+
+    <!--
+      El servicio hereda las variables de entorno del sistema:
+        MUEVETE_BI_JAVA_HOME  (ruta al JDK 17)
+        MUEVETE_BI_MASTER_KEY (master key de cifrado Jasypt)
+      Definirlas con: setx /M NOMBRE "valor"  (requiere reiniciar sesion o servicio)
+    -->
+</service>
